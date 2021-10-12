@@ -12,8 +12,8 @@ difficulty = input("Ingresa nivel de dificultad (1:Fácil, 2:Medio, 3:Difícil):
 assert difficulty.isdigit(), "El valor ingresado debe ser un número entre 1 y 3"
 difficulty = int(difficulty)
 assert difficulty in [1,2,3,4], "El valor ingresado debe ser un número entre 1 y 3"
-#difficulty = (difficulty**2)*10
-difficulty = 200
+difficulty = (difficulty**2)*10
+#difficulty = 200
 
 # Checks for errors encountered
 check_errors = pygame.init()
@@ -79,6 +79,19 @@ def show_score(choice, color, font, size):
     game_window.blit(score_surface, score_rect)
     # pygame.display.flip()
     
+goal = 10
+def win_game():
+    my_font = pygame.font.SysFont('times new roman', 90)
+    game_over_surface = my_font.render('YOU WIN', True, green)
+    game_over_rect = game_over_surface.get_rect()
+    game_over_rect.midtop = (frame_size_x/2, frame_size_y/4)
+    game_window.fill(black)
+    game_window.blit(game_over_surface, game_over_rect)
+    show_score(0, white, 'consolas', 20)
+    pygame.display.flip()
+    time.sleep(3)
+    pygame.quit()
+    sys.exit()
 
 # Main logic
 while True:
@@ -126,6 +139,8 @@ while True:
     if snake_pos[0] == food_pos[0] and snake_pos[1] == food_pos[1]:
         score += 1
         food_spawn = False
+        if score == 10:
+            win_game()
     else:
         snake_body.pop()
 
