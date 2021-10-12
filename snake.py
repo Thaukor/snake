@@ -2,6 +2,8 @@
 
 import pygame, sys, time, random
 
+from pygame.constants import K_c
+
 
 # Window size
 frame_size_x = 720
@@ -52,6 +54,26 @@ change_to = direction
 
 score = 0
 
+# oof
+def restart_game():
+    global snake_body
+    global snake_pos
+
+    global direction
+    global change_to
+    global score
+
+    global in_game_over_screen
+    snake_pos = [100, 50]
+    snake_body = [[100, 50], [100-10, 50], [100-(2*10), 50]]
+
+    direction = 'RIGHT'
+    change_to = direction
+
+    score = 0
+
+    in_game_over_screen = False
+    
 # Game Over
 def game_over():
     my_font = pygame.font.SysFont('times new roman', 90)
@@ -101,6 +123,8 @@ while True:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     exit_game()
+                if event.key == pygame.K_c:
+                    restart_game()
         continue
 
     for event in pygame.event.get():
