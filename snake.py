@@ -69,9 +69,6 @@ def game_over():
     game_window.blit(continue_surface, continue_rect)
     show_score(0, red, 'consolas', 20)
     pygame.display.flip()
-    time.sleep(3)
-    pygame.quit()
-    sys.exit()
     
     
 # Score
@@ -85,10 +82,27 @@ def show_score(choice, color, font, size):
         score_rect.midtop = (frame_size_x/2, frame_size_y/1.25)
     game_window.blit(score_surface, score_rect)
     # pygame.display.flip()
-    
+
+in_game_over_screen = False
+
+def exit_game():
+    pygame.quit()
+    sys.exit()
 
 # Main logic
 while True:
+    # Show game over screen but don't stop the game
+    if in_game_over_screen:
+        game_over()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    exit_game()
+        continue
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -155,13 +169,13 @@ while True:
     # Game Over conditions
     # Getting out of bounds
     if snake_pos[0] < 0 or snake_pos[0] > frame_size_x-10:
-        game_over()
+        in_game_over_screen = True
     if snake_pos[1] < 0 or snake_pos[1] > frame_size_y-10:
-        game_over()
+        in_game_over_screen = True
     # Touching the snake body
     for block in snake_body[1:]:
         if snake_pos[0] == block[0] and snake_pos[1] == block[1]:
-            game_over()
+            in_game_over_screen = True
 
     show_score(1, white, 'consolas', 20)
     # Refresh game screen
