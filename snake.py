@@ -110,6 +110,20 @@ in_game_over_screen = False
 def exit_game():
     pygame.quit()
     sys.exit()
+    
+goal = 10
+def win_game():
+    my_font = pygame.font.SysFont('times new roman', 90)
+    game_over_surface = my_font.render('YOU WIN', True, green)
+    game_over_rect = game_over_surface.get_rect()
+    game_over_rect.midtop = (frame_size_x/2, frame_size_y/4)
+    game_window.fill(black)
+    game_window.blit(game_over_surface, game_over_rect)
+    show_score(0, white, 'consolas', 20)
+    pygame.display.flip()
+    time.sleep(3)
+    pygame.quit()
+    sys.exit()
 
 # Main logic
 while True:
@@ -171,6 +185,8 @@ while True:
     if snake_pos[0] == food_pos[0] and snake_pos[1] == food_pos[1]:
         score += 1
         food_spawn = False
+        if score == 10:
+            win_game()
     else:
         snake_body.pop()
 
